@@ -1,4 +1,5 @@
 package com.hzhang.sweethome.model;
 
-public class UserRole {
+public enum UserRole {
+    ROLE_USER, ROLE_MANAGER
 }
