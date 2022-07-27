@@ -28,4 +28,16 @@ public class UnreadNumService {
         }
         return unreadNum.get().getNum();
     }
+
+    public void increaseUnreadNumByOne(String email, String type) {
+        unreadNumRepository.increaseUnreadNumByOneById(email, type);
+    }
+
+    public void clearUnreadNum(String email, String type) {
+        unreadNumRepository.clearUnreadNumById(email, type);
+    }
+
+    public void clearAllPublicUnreadNum() {
+        unreadNumRepository.clearAllPublicUnreadNum();
+    }
 }
