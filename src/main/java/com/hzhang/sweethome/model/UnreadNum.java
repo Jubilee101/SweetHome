@@ -10,18 +10,18 @@ import java.io.Serializable;
 public class UnreadNum implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    private UserInvoiceTypeKey id;
+    private UnreadNumKey id;
 
     private int num;
 
     public UnreadNum() {}
 
-    public UnreadNum(UserInvoiceTypeKey id, int num) {
+    public UnreadNum(UnreadNumKey id, int num) {
         this.id = id;
         this.num = num;
     }
 
-    public UserInvoiceTypeKey getId() {return id;}
+    public UnreadNumKey getId() {return id;}
 
     public int getNum() {return num;}
 }

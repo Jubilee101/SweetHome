@@ -5,16 +5,16 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class UserInvoiceTypeKey implements Serializable {
+public class UnreadNumKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String email;
 
     private String type;
 
-    public UserInvoiceTypeKey() {}
+    public UnreadNumKey() {}
 
-    public UserInvoiceTypeKey setEmail(String email) {
+    public UnreadNumKey setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -27,12 +27,12 @@ public class UserInvoiceTypeKey implements Serializable {
         return type;
     }
 
-    public UserInvoiceTypeKey setType(String type) {
+    public UnreadNumKey setType(String type) {
         this.type = type;
         return this;
     }
 
-    public UserInvoiceTypeKey setType(InvoiceType type) {
+    public UnreadNumKey setType(InvoiceType type) {
         this.type = type.name();
         return this;
     }
@@ -41,7 +41,7 @@ public class UserInvoiceTypeKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserInvoiceTypeKey that = (UserInvoiceTypeKey) o;
+        UnreadNumKey that = (UnreadNumKey) o;
         return email.equals(that.getEmail()) && type.equals(that.email);
     }
 
