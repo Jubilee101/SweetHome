@@ -1,5 +1,6 @@
 package com.hzhang.sweethome.controller;
 
+import com.hzhang.sweethome.exception.UnreadNumNotExistException;
 import com.hzhang.sweethome.exception.UserAlreadyExistException;
 import com.hzhang.sweethome.exception.UserNotExistException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(UserNotExistException.class)
     public final ResponseEntity<String> handleUserNotExistException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UnreadNumNotExistException.class)
+    public final ResponseEntity<String> handleUnreadNumNotExistException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }
