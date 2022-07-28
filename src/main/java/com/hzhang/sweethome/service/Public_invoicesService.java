@@ -2,6 +2,7 @@ package com.hzhang.sweethome.service;
 
 import com.hzhang.sweethome.model.Public_invoices;
 import com.hzhang.sweethome.repository.Public_invoicesRepository;
+import com.hzhang.sweethome.repository.UnreadNumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,12 @@ import java.util.List;
 @Service
 public class Public_invoicesService {
     private Public_invoicesRepository public_invoicesRepository;
+    private UnreadNumRepository unreadNumRepository;
     @Autowired
-    public Public_invoicesService(Public_invoicesRepository public_invoicesRepository){
+    public Public_invoicesService(Public_invoicesRepository public_invoicesRepository,
+                                  UnreadNumRepository unreadNumRepository){
         this.public_invoicesRepository = public_invoicesRepository;
+        this.unreadNumRepository = unreadNumRepository;
     }
 
     public List<Public_invoices> list_public_invoices(){
