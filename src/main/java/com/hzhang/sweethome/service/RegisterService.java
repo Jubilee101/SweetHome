@@ -17,9 +17,11 @@ public class RegisterService {
     private UserRepository userRepository;
     private AuthorityRepository authorityRepository;
     private PasswordEncoder passwordEncoder;
-
+    private UnreadNumService unreadNumService;
     @Autowired
-    public RegisterService(UserRepository userRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+    public RegisterService(UserRepository userRepository,
+                           AuthorityRepository authorityRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
@@ -33,5 +35,6 @@ public class RegisterService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         authorityRepository.save(new Authority(user.getEmail(), role.name()));
+
     }
 }

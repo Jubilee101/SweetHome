@@ -1,5 +1,6 @@
 package com.hzhang.sweethome.service;
 
+import com.hzhang.sweethome.exception.UnreadNumNotExistException;
 import com.hzhang.sweethome.model.UnreadNum;
 import com.hzhang.sweethome.model.UnreadNumKey;
 import com.hzhang.sweethome.repository.UnreadNumRepository;
@@ -18,15 +19,15 @@ public class UnreadNumService {
         this.unreadNumRepository = unreadNumRepository;
     }
 
-    public int getUnreadNumByEmailAndType(String email, String type) {
+    public UnreadNum getUnreadNum(String email, String type) {
         UnreadNumKey key = new UnreadNumKey()
                 .setEmail(email)
                 .setType(type);
         Optional<UnreadNum> unreadNum = unreadNumRepository.findById(key);
         if (!unreadNum.isPresent()) {
-            return 0;
+            throw new UnreadNumNotExistException("cannot find unread nums");
         }
-        return unreadNum.get().getNum();
+        return unreadNum.get();
     }
 
     public void increaseUnreadNumByOne(String email, String type) {
