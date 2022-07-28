@@ -29,6 +29,6 @@ public interface UnreadNumRepository extends JpaRepository<UnreadNum, UnreadNumK
 
     @Transactional
     @Modifying
-    @Query("update UnreadNum unread set unread.num = ?1 where unread.id.type = 'PUBLIC'")
+    @Query("update UnreadNum unread set unread.num = unread.num + ?1 where unread.id.type = 'PUBLIC'")
     int updateAllPublicUnreadNum(int num);
 }
