@@ -22,6 +22,7 @@ public class Public_invoicesController {
     @PostMapping("/public_invoice")
     public void addPublic_invoices(@RequestBody Public_invoices public_invoices){
         public_invoicesService.add(public_invoices);
+
     }
 
 }

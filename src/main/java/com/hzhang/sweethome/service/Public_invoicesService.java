@@ -30,5 +30,6 @@ public class Public_invoicesService {
 
     public void add(Public_invoices public_invoices){
         public_invoicesRepository.save(public_invoices);
+        unreadNumRepository.updateAllPublicUnreadNum(1);
     }
 }
