@@ -24,4 +24,9 @@ public class UnreadNum implements Serializable {
     public UnreadNumKey getId() {return id;}
 
     public int getNum() {return num;}
+
+    public UnreadNum setId(UnreadNumKey key) {
+        this.id = key;
+        return this;
+    }
 }
