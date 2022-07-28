@@ -3,6 +3,7 @@ package com.hzhang.sweethome.controller;
 import com.hzhang.sweethome.model.UnreadNum;
 import com.hzhang.sweethome.service.UnreadNumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ public class UnreadNumController {
         this.unreadNumService = unreadNumService;
     }
 
-    @PostMapping(value = "/unread_nums")
+    @GetMapping(value = "/unread_nums")
     public UnreadNum getUnreadNums(@RequestParam(name = "type") String type, Principal principal) {
         return unreadNumService.getUnreadNum(principal.getName(),type);
     }
