@@ -1,5 +1,6 @@
 package com.hzhang.sweethome.controller;
 
+import com.hzhang.sweethome.exception.PersonalInvoiceNotExistException;
 import com.hzhang.sweethome.exception.UnreadNumNotExistException;
 import com.hzhang.sweethome.exception.UserAlreadyExistException;
 import com.hzhang.sweethome.exception.UserNotExistException;
@@ -23,6 +24,11 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(UnreadNumNotExistException.class)
     public final ResponseEntity<String> handleUnreadNumNotExistException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PersonalInvoiceNotExistException.class)
+    public final ResponseEntity<String> handlePersonalInvoiceNotExistException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
