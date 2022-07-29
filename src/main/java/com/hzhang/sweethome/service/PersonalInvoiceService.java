@@ -9,6 +9,7 @@ import com.hzhang.sweethome.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class PersonalInvoiceService {
         User user = new User.Builder().setEmail(email).build();
         List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByUserAndType(user,type);
         if(invoiceList==null){
-            throw new PersonalInvoiceNotExistException("Invoice does not exist");
+            return new ArrayList<>();
         }
         invoiceList.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         return invoiceList;
