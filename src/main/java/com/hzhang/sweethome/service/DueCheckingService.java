@@ -27,9 +27,8 @@ public class DueCheckingService {
         if (LocalDate.now().getDayOfMonth() != 29) {
             return;
         }
-        User user = new User.Builder().setEmail(email).build();
         List<PersonalInvoice> paymentInvoices = personalInvoiceRepository
-                .findByUserAndTypeAndDate(user, InvoiceType.PAYMENT.name(), LocalDate.now());
+                .findByUserAndTypeAndDate(new User.Builder().setEmail(email).build(), InvoiceType.PAYMENT.name(), LocalDate.now());
         if (!paymentInvoices.isEmpty()) {
             return;
         }
