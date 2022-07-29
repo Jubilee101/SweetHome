@@ -26,7 +26,6 @@ public class PersonalInvoice implements Serializable {
     public PersonalInvoice() {}
 
     private PersonalInvoice(Builder builder) {
-        this.id=builder.id;
         this.type=builder.type;
         this.text= builder.text;
         this.date=builder.Date;

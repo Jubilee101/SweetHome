@@ -7,12 +7,14 @@ import com.hzhang.sweethome.repository.PersonalInvoiceRepository;
 import com.hzhang.sweethome.repository.UnreadNumRepository;
 import com.hzhang.sweethome.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PersonalInvoiceService {
     private PersonalInvoiceRepository personalInvoiceReository;
     private UserRepository userRepository;
@@ -26,9 +28,9 @@ public class PersonalInvoiceService {
         this.unreadNumRepository = unreadNumRepository;
     }
 
-    public List<PersonalInvoice> listByUserandType(String email, String type) throws PersonalInvoiceNotExistException {
-        User user = new User.Builder().setEmail(email).build();
-        List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByUserAndType(user,type);
+    public List<PersonalInvoice> listByUserAndType(String email, String type) throws PersonalInvoiceNotExistException {
+        List<PersonalInvoice> invoiceList =  personalInvoiceReository
+                .findByUserAndType(new User.Builder().setEmail(email).build(),type);
         if(invoiceList==null){
             return new ArrayList<>();
         }
