@@ -3,12 +3,7 @@ import com.hzhang.sweethome.exception.PersonalInvoiceNotExistException;
 import com.hzhang.sweethome.model.PersonalInvoice;
 import com.hzhang.sweethome.repository.PersonalInvoiceReository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PersonalInvoiceService {
@@ -17,12 +12,13 @@ public class PersonalInvoiceService {
     public PersonalInvoiceService(PersonalInvoiceReository personalInvoiceReository) {
         this.personalInvoiceReository = personalInvoiceReository;
     }
-    public List<String> listByUserandType(String email,String type) throws PersonalInvoiceNotExistException {
-        List<String> textList =  personalInvoiceReository.findByEmailandType(email,type);
-        if(textList==null){
+    public List<PersonalInvoice> listByUserandType(String email, String type) throws PersonalInvoiceNotExistException {
+        List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByEmailandType(email,type);
+        if(invoiceList==null){
             throw new PersonalInvoiceNotExistException("Invoice does not exist");
         }
-        return textList;
+        invoiceList.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        return invoiceList;
     }
 
     public void add(PersonalInvoice personalInvoice){

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +17,7 @@ public class PersonalInvoice implements Serializable {
     private long id;
     private String type;
     private String text;
-    private Timestamp timestamp;
+    private LocalDate Date;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -26,7 +27,7 @@ public class PersonalInvoice implements Serializable {
         this.id=builder.id;
         this.type=builder.type;
         this.text= builder.text;
-        this.timestamp=builder.timestamp;
+        this.Date=builder.Date;
         this.user=builder.user;
     }
 
@@ -42,8 +43,8 @@ public class PersonalInvoice implements Serializable {
         return text;
     }
 
-    public Timestamp getGuestTimestamp() {
-        return timestamp;
+    public LocalDate getDate() {
+        return Date;
     }
 
     public User getUser() {
@@ -61,7 +62,7 @@ public class PersonalInvoice implements Serializable {
         private String text;
 
         @JsonProperty("timestamp")
-        private Timestamp timestamp;
+        private LocalDate Date;
 
         @JsonProperty("user")
         private User user;
@@ -81,8 +82,8 @@ public class PersonalInvoice implements Serializable {
             return this;
         }
 
-        public Builder setTimestamp(Timestamp timestamp) {
-            this.timestamp = timestamp;
+        public Builder setTimestamp(LocalDate Date) {
+            this.Date = Date;
             return this;
         }
 

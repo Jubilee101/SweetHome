@@ -8,5 +8,5 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 public interface PersonalInvoiceReository extends JpaRepository<PersonalInvoice,Long>  {
-    List<String> findByEmailandType(String email,String type);
+    List<PersonalInvoice> findByEmailandType(String email,String type);
 }
