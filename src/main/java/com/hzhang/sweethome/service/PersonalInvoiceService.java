@@ -26,7 +26,8 @@ public class PersonalInvoiceService {
     }
 
     public List<PersonalInvoice> listByUserandType(String email, String type) throws PersonalInvoiceNotExistException {
-        List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByEmailAndType(email,type);
+        User user = new User.Builder().setEmail(email).build();
+        List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByUserAndType(user,type);
         if(invoiceList==null){
             throw new PersonalInvoiceNotExistException("Invoice does not exist");
         }
