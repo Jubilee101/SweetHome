@@ -3,7 +3,7 @@ import com.hzhang.sweethome.exception.PersonalInvoiceNotExistException;
 import com.hzhang.sweethome.exception.UserNotExistException;
 import com.hzhang.sweethome.model.PersonalInvoice;
 import com.hzhang.sweethome.model.User;
-import com.hzhang.sweethome.repository.PersonalInvoiceReository;
+import com.hzhang.sweethome.repository.PersonalInvoiceRepository;
 import com.hzhang.sweethome.repository.UnreadNumRepository;
 import com.hzhang.sweethome.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class PersonalInvoiceService {
-    private PersonalInvoiceReository personalInvoiceReository;
+    private PersonalInvoiceRepository personalInvoiceReository;
     private UserRepository userRepository;
     private UnreadNumRepository unreadNumRepository;
     @Autowired
-    public PersonalInvoiceService(PersonalInvoiceReository personalInvoiceReository,
+    public PersonalInvoiceService(PersonalInvoiceRepository personalInvoiceReository,
                                   UserRepository userRepository,
                                   UnreadNumRepository unreadNumRepository) {
         this.personalInvoiceReository = personalInvoiceReository;
@@ -26,7 +26,7 @@ public class PersonalInvoiceService {
     }
 
     public List<PersonalInvoice> listByUserandType(String email, String type) throws PersonalInvoiceNotExistException {
-        List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByEmailandType(email,type);
+        List<PersonalInvoice> invoiceList =  personalInvoiceReository.findByEmailAndType(email,type);
         if(invoiceList==null){
             throw new PersonalInvoiceNotExistException("Invoice does not exist");
         }
