@@ -4,6 +4,7 @@ import com.hzhang.sweethome.exception.UserNotExistException;
 import com.hzhang.sweethome.model.PersonalInvoice;
 import com.hzhang.sweethome.model.User;
 import com.hzhang.sweethome.repository.PersonalInvoiceReository;
+import com.hzhang.sweethome.repository.UnreadNumRepository;
 import com.hzhang.sweethome.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,11 +15,14 @@ import java.util.Optional;
 public class PersonalInvoiceService {
     private PersonalInvoiceReository personalInvoiceReository;
     private UserRepository userRepository;
+    private UnreadNumRepository unreadNumRepository;
     @Autowired
     public PersonalInvoiceService(PersonalInvoiceReository personalInvoiceReository,
-                                  UserRepository userRepository) {
+                                  UserRepository userRepository,
+                                  UnreadNumRepository unreadNumRepository) {
         this.personalInvoiceReository = personalInvoiceReository;
         this.userRepository = userRepository;
+        this.unreadNumRepository = unreadNumRepository;
     }
 
     public List<PersonalInvoice> listByUserandType(String email, String type) throws PersonalInvoiceNotExistException {
@@ -43,6 +47,7 @@ public class PersonalInvoiceService {
                 .setUser(user.get())
                 .build();
         personalInvoiceReository.save(personalInvoice);
+        unreadNumRepository.increaseUnreadNumByOneById(user.get().getEmail(), type);
     }
 
 
