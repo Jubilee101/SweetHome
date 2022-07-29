@@ -1,9 +1,10 @@
 package com.hzhang.sweethome.model;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import javax.persistence.*;
 
@@ -20,6 +21,7 @@ public class PersonalInvoice implements Serializable {
     private LocalDate Date;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     public PersonalInvoice() {}
 
@@ -61,16 +63,11 @@ public class PersonalInvoice implements Serializable {
         @JsonProperty("text")
         private String text;
 
-        @JsonProperty("timestamp")
+        @JsonProperty("date")
         private LocalDate Date;
 
         @JsonProperty("user")
         private User user;
-
-        public Builder setId(Long id) {
-            this.id = id;
-            return this;
-        }
 
         public Builder setType(String type) {
             this.type = type;
@@ -82,7 +79,7 @@ public class PersonalInvoice implements Serializable {
             return this;
         }
 
-        public Builder setTimestamp(LocalDate Date) {
+        public Builder setDate(LocalDate Date) {
             this.Date = Date;
             return this;
         }

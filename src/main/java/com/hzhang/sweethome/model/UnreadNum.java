@@ -1,5 +1,7 @@
 package com.hzhang.sweethome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,6 +12,7 @@ import java.io.Serializable;
 public class UnreadNum implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
+    @JsonIgnore
     private UnreadNumKey id;
 
     private int num;
