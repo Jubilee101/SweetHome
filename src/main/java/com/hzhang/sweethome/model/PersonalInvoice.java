@@ -18,7 +18,7 @@ public class PersonalInvoice implements Serializable {
     private long id;
     private String type;
     private String text;
-    private LocalDate Date;
+    private LocalDate date;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
@@ -29,7 +29,7 @@ public class PersonalInvoice implements Serializable {
         this.id=builder.id;
         this.type=builder.type;
         this.text= builder.text;
-        this.Date=builder.Date;
+        this.date=builder.Date;
         this.user=builder.user;
     }
 
@@ -46,7 +46,7 @@ public class PersonalInvoice implements Serializable {
     }
 
     public LocalDate getDate() {
-        return Date;
+        return date;
     }
 
     public User getUser() {
