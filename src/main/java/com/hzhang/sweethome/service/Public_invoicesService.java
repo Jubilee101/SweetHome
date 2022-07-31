@@ -24,7 +24,7 @@ public class Public_invoicesService {
     public List<Public_invoices> list_public_invoices(){
 
         List<Public_invoices> invoices = public_invoicesRepository.findAll();
-        invoices.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        invoices.sort((o1, o2) -> -1 * o1.getDate().compareTo(o2.getDate()));
         return invoices;
     }
 

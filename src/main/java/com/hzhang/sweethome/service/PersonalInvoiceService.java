@@ -34,7 +34,7 @@ public class PersonalInvoiceService {
         if(invoiceList==null){
             return new ArrayList<>();
         }
-        invoiceList.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        invoiceList.sort((o1, o2) -> -1 * o1.getDate().compareTo(o2.getDate()));
         return invoiceList;
     }
 
