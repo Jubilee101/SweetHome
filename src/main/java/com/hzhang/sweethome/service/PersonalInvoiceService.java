@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,12 @@ public class PersonalInvoiceService {
         if(invoiceList==null){
             return new ArrayList<>();
         }
-        invoiceList.sort((o1, o2) -> -1 * o1.getDate().compareTo(o2.getDate()));
+        invoiceList.sort((o1, o2) -> {
+            if (o1.getDate().equals(o2.getDate())) {
+                return -1 * o1.getTime().compareTo(o2.getTime());
+            }
+            return -1 * o1.getDate().compareTo(o2.getDate());
+        });
         return invoiceList;
     }
 
@@ -49,6 +55,7 @@ public class PersonalInvoiceService {
                 .setText(text)
                 .setType(type)
                 .setUser(user.get())
+                .setTime(LocalTime.now())
                 .build();
         personalInvoiceReository.save(personalInvoice);
         unreadNumRepository.increaseUnreadNumByOneById(user.get().getEmail(), type);
