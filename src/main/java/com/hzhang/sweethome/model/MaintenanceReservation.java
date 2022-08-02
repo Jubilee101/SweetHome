@@ -19,9 +19,6 @@ public class MaintenanceReservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonProperty("room")
-    private String room;
-
     @JsonProperty("start_time")
     private LocalTime startTime;
 
@@ -32,8 +29,8 @@ public class MaintenanceReservation implements Serializable {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "resident_id")
-    private User resident;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "maintenanceReservation", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MaintenanceImage> maintenanceImages;
@@ -41,12 +38,10 @@ public class MaintenanceReservation implements Serializable {
     public MaintenanceReservation(){};
 
     private MaintenanceReservation(Builder builder){
-        this.id = builder.id;
-        this.room = builder.room;
         this.startTime = builder.startTime;
         this.date = builder.date;
         this.description = builder.description;
-        this.resident = builder.resident;
+        this.user = builder.user;
         this.maintenanceImages = builder.maintenanceImages;
     }
 
@@ -63,8 +58,6 @@ public class MaintenanceReservation implements Serializable {
         return id;
     }
 
-    public String getRoom() { return room; }
-
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -78,11 +71,11 @@ public class MaintenanceReservation implements Serializable {
     }
 
 
-    public User getResident() {
-        return resident;
+    public User getUser() {
+        return user;
     }
-    public MaintenanceReservation setResident(User resident){
-        this.resident = resident;
+    public MaintenanceReservation setUser(User resident){
+        this.user = resident;
         return this;
     }
 
@@ -91,8 +84,6 @@ public class MaintenanceReservation implements Serializable {
     public static class Builder{
         @JsonProperty("id")
         private Long id;
-        @JsonProperty("room")
-        private String room;
 
         @JsonProperty("start_time")
         private LocalTime startTime;
@@ -103,8 +94,8 @@ public class MaintenanceReservation implements Serializable {
         @JsonProperty("description")
         private String description;
 
-        @JsonProperty("resident")
-        private User resident;
+        @JsonProperty("user_id")
+        private User user;
 
         @JsonProperty("maintenanceImages")
         private List<MaintenanceImage> maintenanceImages;
@@ -114,11 +105,6 @@ public class MaintenanceReservation implements Serializable {
             return this;
         }
 
-
-        public Builder setRoom(String room) {
-            this.room = room;
-            return this;
-        }
 
         public Builder setStartTime(LocalTime startTime) {
             this.startTime = startTime;
@@ -137,8 +123,8 @@ public class MaintenanceReservation implements Serializable {
             return this;
         }
 
-        public Builder setResident(User resident){
-            this.resident = resident;
+        public Builder setUser(User user){
+            this.user = user;
             return this;
         }
 

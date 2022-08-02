@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface MaintenanceReservationRepository extends JpaRepository<MaintenanceReservation, Long>{
 
-    MaintenanceReservation findByRoomAndName(String room, User user);
+    List<MaintenanceReservation> findByUser(User user);
 
 }

@@ -21,34 +21,16 @@ public class MaintenanceReservationController {
         this.maintenanceReservationService = maintenanceReservationService;
     }
 
-    // list all reservation (sorted by time)
-    @GetMapping("/maintenance")
-    public List<MaintenanceReservation> listMaintenanceReservation(Principal principal){
-        return maintenanceReservationService.listAll();
-    }
-
-    // find the reservation by the room number of the resident
-    @GetMapping("/maintenance/*")
-    public MaintenanceReservation getMaintenanceReservation(
-            @RequestParam(name = "room") String room,
-            @RequestParam(name = "user") String name){
-        return maintenanceReservationService.findByRoomAndName(room, name);
+    // find the reservation by the email of the resident
+    @GetMapping("/maintenance/resident")
+    public List<MaintenanceReservation> getMaintenanceReservation(Principal principal){
+        return maintenanceReservationService.findByUser(principal.getName());
     }
     @PostMapping("/maintenance")
     public void addMaintenanceReservation(
-            @RequestParam("room") String room,
-            @RequestParam("resident") String resident,
             @RequestParam("description") String description,
-            @RequestParam("date") LocalDate date,
-            @RequestParam("start_time") LocalTime startTime,
-            @RequestParam("images") MultipartFile[] images){
-        MaintenanceReservation maintenanceReservation = new MaintenanceReservation.Builder()
-                .setDescription(description)
-                .setRoom(room)
-                .setResident(new User.Builder().setName(resident).build())
-                .setDate(date)
-                .setStartTime(startTime)
-                .build();
-        maintenanceReservationService.add(maintenanceReservation, images);
+            @RequestParam("images") MultipartFile[] images,
+            Principal principal){
+        maintenanceReservationService.add(principal.getName(), description, images);
     }
 }
