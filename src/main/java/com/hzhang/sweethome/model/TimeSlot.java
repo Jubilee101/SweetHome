@@ -17,6 +17,8 @@ public class TimeSlot implements Serializable {
         this.timeFrame = timeFrame;
     }
 
+    public TimeSlot(){}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

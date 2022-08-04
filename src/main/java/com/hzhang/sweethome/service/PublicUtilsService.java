@@ -18,11 +18,11 @@ public class PublicUtilsService {
         this.publicUtilsRepository = publicUtilsRepository;
     }
 
-    List<PublicUtils> getAllPublicUtils() {
+    public List<PublicUtils> getAllPublicUtils() {
         return publicUtilsRepository.findAll();
     }
 
-    void add(String category, String description) {
+    public void add(String category, String description) {
         Optional<PublicUtils> utils = publicUtilsRepository.findByCategory(category);
         if (utils.isPresent()) {
             throw new PublicUtilsAlreadyExistsException("This public utility already exists");

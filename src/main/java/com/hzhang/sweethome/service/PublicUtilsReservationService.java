@@ -1,6 +1,7 @@
 package com.hzhang.sweethome.service;
 
 import com.hzhang.sweethome.exception.PublicUtilsReservationAlreadyExistsException;
+import com.hzhang.sweethome.model.InvoiceType;
 import com.hzhang.sweethome.model.PublicUtils;
 import com.hzhang.sweethome.model.PublicUtilsReservation;
 import com.hzhang.sweethome.model.TimeFrame;
@@ -21,10 +22,13 @@ import java.util.Set;
 @Service
 public class PublicUtilsReservationService {
     private PublicUtilsReservationRepository publicUtilsReservationRepository;
+    private PersonalInvoiceService personalInvoiceService;
 
     @Autowired
-    PublicUtilsReservationService(PublicUtilsReservationRepository publicUtilsReservationRepository) {
+    PublicUtilsReservationService(PublicUtilsReservationRepository publicUtilsReservationRepository,
+                                  PersonalInvoiceService personalInvoiceService) {
         this.publicUtilsReservationRepository = publicUtilsReservationRepository;
+        this.personalInvoiceService = personalInvoiceService;
     }
 
     public List<TimeSlot> getAvailableTimeSlots(String category) {
@@ -58,7 +62,8 @@ public class PublicUtilsReservationService {
                 new User.Builder().setEmail(email).build());
     }
 
-    public void add(String category, LocalDate date, TimeFrame timeFrame, String email) {
+    public void add(String category, LocalDate date, String time, String email) {
+        TimeFrame timeFrame = parse(time);
         Optional<PublicUtilsReservation> reserve = publicUtilsReservationRepository
                 .findPublicUtilsReservationByPublicUtilsAndDateAndTimeFrame(
                         new PublicUtils(category), date, timeFrame);
@@ -74,18 +79,40 @@ public class PublicUtilsReservationService {
         publicUtilsReservationRepository.save(reservation);
     }
 
-    public void cancel(LocalDate date, TimeFrame timeFrame, String category, String email) {
-        publicUtilsReservationRepository.deleteByPublicUtilsAndDateAndTimeFrame(new PublicUtils(category),
-                date, timeFrame);
-        PublicUtilsReservation reservation = new PublicUtilsReservation.Builder()
+    public void cancel(LocalDate date, String time, String category, String email) {
+        TimeFrame timeFrame = parse(time);
+        Optional<PublicUtilsReservation> reservation = publicUtilsReservationRepository
+                .findPublicUtilsReservationByPublicUtilsAndDateAndTimeFrame(new PublicUtils(category),
+                        date, timeFrame);
+        if (reservation.isPresent()) {
+            publicUtilsReservationRepository.deleteByPublicUtilsAndDateAndTimeFrame(new PublicUtils(category),
+                    date, timeFrame);
+            String text = "So sorry, your reservation of "
+                    + reservation.get().getCategory()
+                    + " on " + reservation.get().getDate().toString() +
+                    " at " + reservation.get().getTimeFrame().getTime() +
+                    " is canceled!";
+            personalInvoiceService.add(InvoiceType.RESERVATION.name(),
+                    text, reservation.get().getUser());
+        }
+        PublicUtilsReservation reservationManager = new PublicUtilsReservation.Builder()
                 .setDate(date)
                 .setTimeFrame(timeFrame)
                 .setPublicUtils(new PublicUtils(category))
                 .setUser(new User.Builder().setEmail(email).build())
                 .build();
-        publicUtilsReservationRepository.save(reservation);
+        publicUtilsReservationRepository.save(reservationManager);
+
     }
 
-
-
+    private TimeFrame parse(String time) {
+        TimeFrame timeFrame = null;
+        for (TimeFrame t : TimeFrame.values()) {
+            if (t.getTime().equals(time)) {
+                timeFrame = t;
+                break;
+            }
+        }
+        return timeFrame;
+    }
 }

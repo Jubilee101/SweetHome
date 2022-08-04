@@ -44,6 +44,10 @@ public class PublicUtilsReservation implements Serializable {
         return timeFrame;
     }
 
+    public String getCategory() {return publicUtils.category;}
+
+    public User getUser() {return this.user;}
+
     public PublicUtilsReservation(){}
 
     private PublicUtilsReservation(Builder builder) {
