@@ -79,8 +79,6 @@ public class MaintenanceReservation implements Serializable {
         return this;
     }
 
-
-
     public static class Builder{
         @JsonProperty("id")
         private Long id;
