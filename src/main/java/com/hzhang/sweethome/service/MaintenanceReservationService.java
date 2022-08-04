@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -81,5 +83,38 @@ public class MaintenanceReservationService {
             });
         }
         return reservations;
+    }
+    public List<MaintenanceReservation> findall() {
+        List<MaintenanceReservation> reservations = maintenanceReservationRepository.findAll();
+        if (!reservations.isEmpty()) {
+            reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> {
+                if (o1.getDate() == null && o2.getDate() == null) {
+                    return 0;
+                } else if (o1.getDate() == null) {
+                    return -1;
+                } else if (o2.getDate() == null) {
+                    return 1;
+                } else {
+                    if (o1.getDate().equals(o2.getDate())) {
+                        return -1 * o1.getStartTime().compareTo(o2.getStartTime());
+                    } else {
+                        return -1 * o1.getDate().compareTo(o2.getDate());
+                    }
+                }
+            });
+        }
+        return reservations;
+
+    }
+
+    public void updateDate(LocalDate date, Long id){
+        maintenanceReservationRepository.updateDate(date,id);
+    }
+    public void updateTime(LocalTime startTime, Long id){
+        maintenanceReservationRepository.updateTime(startTime,id);
+    }
+    public  void updateTimeAndDate(LocalDate date,LocalTime startTime,Long id){
+        updateDate(date,id);
+        updateTime(startTime,id);
     }
 }

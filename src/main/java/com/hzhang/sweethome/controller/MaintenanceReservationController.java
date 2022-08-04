@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -32,5 +33,19 @@ public class MaintenanceReservationController {
             @RequestParam("images") MultipartFile[] images,
             Principal principal){
         maintenanceReservationService.add(principal.getName(), description, images);
+    }
+
+    @GetMapping("/maintenance")
+    public List<MaintenanceReservation> findall(){
+        return maintenanceReservationService.findall();
+    }
+    @PutMapping("/maintenance")
+    public void updateDateAndTime(@RequestParam("date") String date,
+                                  @RequestParam("time") String time,
+                                  @RequestParam("id") Long id){
+        LocalDate startDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalTime startTime = LocalTime.parse(time,DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        maintenanceReservationService.updateTimeAndDate(startDate,startTime,id);
     }
 }
