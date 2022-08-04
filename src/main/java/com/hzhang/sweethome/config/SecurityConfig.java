@@ -1,5 +1,6 @@
 package com.hzhang.sweethome.config;
 
+import com.google.api.Http;
 import com.hzhang.sweethome.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,7 +46,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/maintenance").hasAuthority("ROLE_MANAGER")
                 .antMatchers(HttpMethod.GET,"/maintenance/resident").hasAuthority("ROLE_RESIDENT")
                 .antMatchers(HttpMethod.POST, "/maintenance").hasAuthority("ROLE_RESIDENT")
-                .antMatchers(HttpMethod.PUT, "/maintenance/").hasAuthority("ROLE_MANAGER")
+                .antMatchers(HttpMethod.PUT, "/maintenance/*").hasAuthority("ROLE_MANAGER")
+                .antMatchers(HttpMethod.GET, "/public_utils").permitAll()
+                .antMatchers(HttpMethod.POST, "/public_utils").hasAuthority("ROLE_MANAGER")
+                .antMatchers(HttpMethod.POST, "/public_utils/reserve").hasAuthority("ROLE_RESIDENT")
+                .antMatchers(HttpMethod.GET, "/public_utils/available").permitAll()
+                .antMatchers(HttpMethod.GET, "/public_utils/list").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/public_utils").hasAuthority("ROLE_MANAGER")
                 .anyRequest().authenticated()
                 .and()
                 .csrf()

@@ -61,6 +61,17 @@ public class PersonalInvoiceService {
         unreadNumRepository.increaseUnreadNumByOneById(user.get().getEmail(), type);
     }
 
-
+    public void add(String type, String text, User user){
+        PersonalInvoice personalInvoice = new PersonalInvoice
+                .Builder()
+                .setDate(LocalDate.now())
+                .setText(text)
+                .setType(type)
+                .setUser(user)
+                .setTime(LocalTime.now())
+                .build();
+        personalInvoiceReository.save(personalInvoice);
+        unreadNumRepository.increaseUnreadNumByOneById(user.getEmail(), type);
+    }
 
 }
