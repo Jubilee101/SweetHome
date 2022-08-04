@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "public_utils_reservation")
-@JsonDeserialize(builder = MaintenanceReservation.Builder.class)
+@JsonDeserialize(builder = PublicUtilsReservation.Builder.class)
 public class PublicUtilsReservation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

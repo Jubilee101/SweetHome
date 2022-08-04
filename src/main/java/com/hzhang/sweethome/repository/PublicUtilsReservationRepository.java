@@ -6,6 +6,7 @@ import com.hzhang.sweethome.model.TimeFrame;
 import com.hzhang.sweethome.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ public interface PublicUtilsReservationRepository extends JpaRepository<PublicUt
 
     List<PublicUtilsReservation> findByUser(User user);
 
+    @Transactional
     void deleteByPublicUtilsAndDateAndTimeFrame(PublicUtils publicUtils, LocalDate date, TimeFrame timeFrame);
 
     public Optional<PublicUtilsReservation> findPublicUtilsReservationByPublicUtilsAndDateAndTimeFrame(

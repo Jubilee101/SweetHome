@@ -1,5 +1,6 @@
 package com.hzhang.sweethome.controller;
 
+import com.hzhang.sweethome.exception.InvalidCategoryException;
 import com.hzhang.sweethome.exception.PersonalInvoiceNotExistException;
 import com.hzhang.sweethome.exception.PublicUtilsAlreadyExistsException;
 import com.hzhang.sweethome.exception.PublicUtilsReservationAlreadyExistsException;
@@ -42,6 +43,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(PublicUtilsReservationAlreadyExistsException.class)
     public final ResponseEntity<String> handlePublicUtilsReservationAlreadyExistsException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidCategoryException.class)
+    public final ResponseEntity<String> handleInvalidCategoryException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }

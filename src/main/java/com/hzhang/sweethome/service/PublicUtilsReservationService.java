@@ -1,5 +1,6 @@
 package com.hzhang.sweethome.service;
 
+import com.hzhang.sweethome.exception.InvalidCategoryException;
 import com.hzhang.sweethome.exception.PublicUtilsReservationAlreadyExistsException;
 import com.hzhang.sweethome.model.InvoiceType;
 import com.hzhang.sweethome.model.PublicUtils;
@@ -7,6 +8,7 @@ import com.hzhang.sweethome.model.PublicUtilsReservation;
 import com.hzhang.sweethome.model.TimeFrame;
 import com.hzhang.sweethome.model.TimeSlot;
 import com.hzhang.sweethome.model.User;
+import com.hzhang.sweethome.repository.PublicUtilsRepository;
 import com.hzhang.sweethome.repository.PublicUtilsReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,15 +25,22 @@ import java.util.Set;
 public class PublicUtilsReservationService {
     private PublicUtilsReservationRepository publicUtilsReservationRepository;
     private PersonalInvoiceService personalInvoiceService;
+    private PublicUtilsRepository publicUtilsRepository;
 
     @Autowired
     PublicUtilsReservationService(PublicUtilsReservationRepository publicUtilsReservationRepository,
-                                  PersonalInvoiceService personalInvoiceService) {
+                                  PersonalInvoiceService personalInvoiceService,
+                                  PublicUtilsRepository publicUtilsRepository) {
         this.publicUtilsReservationRepository = publicUtilsReservationRepository;
         this.personalInvoiceService = personalInvoiceService;
+        this.publicUtilsRepository = publicUtilsRepository;
     }
 
     public List<TimeSlot> getAvailableTimeSlots(String category) {
+        Optional<PublicUtils> util = publicUtilsRepository.findByCategory(category);
+        if (!util.isPresent()) {
+            throw new InvalidCategoryException("We don't have this category!");
+        }
         List<PublicUtilsReservation> publicUtilsReservations =
                 publicUtilsReservationRepository
                         .findByPublicUtilsAndDateBetween(new PublicUtils(category)
@@ -44,7 +53,7 @@ public class PublicUtilsReservationService {
         }
         List<TimeSlot> slots = new ArrayList<>();
         for (LocalDate date = LocalDate.now().plusDays(1);
-             date.isBefore(LocalDate.now().plusDays(7));
+             date.isBefore(LocalDate.now().plusDays(6));
              date = date.plusDays(1)) {
             for (TimeFrame timeFrame : TimeFrame.values()) {
                 TimeSlot slot = new TimeSlot(timeFrame, date);
