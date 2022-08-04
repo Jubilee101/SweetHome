@@ -64,6 +64,7 @@ public class MaintenanceReservationService {
         if (!reservations.isEmpty()) {
             reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> {
                 if (o1.getDate() == null && o2.getDate() == null) {
+
                     return 0;
                 }
                 else if (o1.getDate() == null) {
@@ -84,6 +85,7 @@ public class MaintenanceReservationService {
         }
         return reservations;
     }
+
     public List<MaintenanceReservation> findall() {
         List<MaintenanceReservation> reservations = maintenanceReservationRepository.findAll();
         if (!reservations.isEmpty()) {
