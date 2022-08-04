@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PublicUtilsReservationRepository extends JpaRepository<PublicUtilsReservation, Long> {
@@ -17,5 +18,8 @@ public interface PublicUtilsReservationRepository extends JpaRepository<PublicUt
     List<PublicUtilsReservation> findByUser(User user);
 
     void deleteByPublicUtilsAndDateAndTimeFrame(PublicUtils publicUtils, LocalDate date, TimeFrame timeFrame);
+
+    public Optional<PublicUtilsReservation> findPublicUtilsReservationByPublicUtilsAndDateAndTimeFrame(
+            PublicUtils publicUtils, LocalDate date, TimeFrame timeFrame);
 
 }

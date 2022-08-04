@@ -12,4 +12,15 @@ public class PublicUtils implements Serializable {
     String category;
 
     String description;
+
+    public PublicUtils(){}
+
+    public PublicUtils(String category, String description) {
+        this.category = category;
+        this.description = description;
+    }
+
+    public PublicUtils(String category) {
+        this.category = category;
+    }
 }

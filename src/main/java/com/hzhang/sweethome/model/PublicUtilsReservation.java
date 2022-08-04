@@ -36,6 +36,14 @@ public class PublicUtilsReservation implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public TimeFrame getTimeFrame() {
+        return timeFrame;
+    }
+
     public PublicUtilsReservation(){}
 
     private PublicUtilsReservation(Builder builder) {
