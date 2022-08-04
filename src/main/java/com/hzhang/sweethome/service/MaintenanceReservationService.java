@@ -61,7 +61,7 @@ public class MaintenanceReservationService {
         List<MaintenanceReservation> reservations = maintenanceReservationRepository.findByUser(user.get());
         if (!reservations.isEmpty()) {
             reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> {
-                if (o1.getDate() == null && o1.getDate() == null) {
+                if (o1.getDate() == null && o2.getDate() == null) {
                     return 0;
                 }
                 else if (o1.getDate() == null) {
