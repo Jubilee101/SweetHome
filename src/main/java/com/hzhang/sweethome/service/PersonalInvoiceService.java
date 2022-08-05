@@ -19,14 +19,15 @@ import java.util.Optional;
 public class PersonalInvoiceService {
     private PersonalInvoiceRepository personalInvoiceReository;
     private UserRepository userRepository;
-    private UnreadNumRepository unreadNumRepository;
+    //private UnreadNumRepository unreadNumRepository;
+    private UnreadNumService unreadNumService;
     @Autowired
     public PersonalInvoiceService(PersonalInvoiceRepository personalInvoiceReository,
                                   UserRepository userRepository,
-                                  UnreadNumRepository unreadNumRepository) {
+                                  UnreadNumService unreadNumService) {
         this.personalInvoiceReository = personalInvoiceReository;
         this.userRepository = userRepository;
-        this.unreadNumRepository = unreadNumRepository;
+        this.unreadNumService = unreadNumService;
     }
 
     public List<PersonalInvoice> listByUserAndType(String email, String type) throws PersonalInvoiceNotExistException {
@@ -58,7 +59,7 @@ public class PersonalInvoiceService {
                 .setTime(LocalTime.now())
                 .build();
         personalInvoiceReository.save(personalInvoice);
-        unreadNumRepository.increaseUnreadNumByOneById(user.get().getEmail(), type);
+        unreadNumService.increaseUnreadNumByOne(user.get().getEmail(), type);
     }
 
     public void add(String type, String text, User user){
@@ -71,7 +72,11 @@ public class PersonalInvoiceService {
                 .setTime(LocalTime.now())
                 .build();
         personalInvoiceReository.save(personalInvoice);
-        unreadNumRepository.increaseUnreadNumByOneById(user.getEmail(), type);
+        unreadNumService.increaseUnreadNumByOne(user.getEmail(), type);
+    }
+
+    public List<PersonalInvoice> findByUserAndTypeAndDate(User user, String type, LocalDate date){
+        return personalInvoiceReository.findByUserAndTypeAndDate(user, type, date);
     }
 
 }

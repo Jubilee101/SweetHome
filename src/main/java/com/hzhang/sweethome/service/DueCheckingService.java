@@ -14,33 +14,25 @@ import java.util.List;
 
 @Service
 public class DueCheckingService {
-    private PersonalInvoiceRepository personalInvoiceRepository;
-    private UnreadNumRepository unreadNumRepository;
+    private PersonalInvoiceService personalInvoiceService;
 
     @Autowired
-    public DueCheckingService(PersonalInvoiceRepository personalInvoiceRepository,
-                              UnreadNumRepository unreadNumRepository) {
-        this.personalInvoiceRepository = personalInvoiceRepository;
-        this.unreadNumRepository = unreadNumRepository;
+    public DueCheckingService(PersonalInvoiceService personalInvoiceService) {
+        this.personalInvoiceService = personalInvoiceService;
     }
 
     public void checkDue(String email) {
         if (LocalDate.now().getDayOfMonth() != 29) {
             return;
         }
-        List<PersonalInvoice> paymentInvoices = personalInvoiceRepository
-                .findByUserAndTypeAndDate(new User.Builder().setEmail(email).build(), InvoiceType.PAYMENT.name(), LocalDate.now());
+        List<PersonalInvoice> paymentInvoices = personalInvoiceService
+                .findByUserAndTypeAndDate(new User.Builder().setEmail(email).build(),
+                        InvoiceType.PAYMENT.name(), LocalDate.now());
         if (!paymentInvoices.isEmpty()) {
             return;
         }
-        PersonalInvoice paymentInvoice = new PersonalInvoice.Builder()
-                .setDate(LocalDate.now())
-                .setText("Your payment due is today!")
-                .setType(InvoiceType.PAYMENT.name())
-                .setUser(new User.Builder().setEmail(email).build())
-                .setTime(LocalTime.now())
-                .build();
-        personalInvoiceRepository.save(paymentInvoice);
-        unreadNumRepository.increaseUnreadNumByOneById(email, InvoiceType.PAYMENT.name());
+        String text = "Your payment due is today!";
+        User user = new User.Builder().setEmail(email).build();
+        personalInvoiceService.add(InvoiceType.PAYMENT.name(), text, user);
     }
 }
