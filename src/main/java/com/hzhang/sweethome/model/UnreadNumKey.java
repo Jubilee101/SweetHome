@@ -49,4 +49,8 @@ public class UnreadNumKey implements Serializable {
     public int hashCode() {
         return Objects.hash(email, type);
     }
+
+    public String toString() {
+        return email + type;
+    }
 }

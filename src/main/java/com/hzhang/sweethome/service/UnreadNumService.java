@@ -2,6 +2,7 @@ package com.hzhang.sweethome.service;
 
 import com.hzhang.sweethome.exception.UnreadNumNotExistException;
 import com.hzhang.sweethome.model.DeferredRequestList;
+import com.hzhang.sweethome.model.InvoiceType;
 import com.hzhang.sweethome.model.UnreadNum;
 import com.hzhang.sweethome.model.UnreadNumKey;
 import com.hzhang.sweethome.repository.UnreadNumRepository;
@@ -45,5 +46,10 @@ public class UnreadNumService {
 
     public void clearAllPublicUnreadNum() {
         unreadNumRepository.clearAllPublicUnreadNum();
+    }
+
+    public void incrementPublicUnreadNum() {
+        unreadNumRepository.updateAllPublicUnreadNum(1);
+        deferredRequestList.publish();
     }
 }

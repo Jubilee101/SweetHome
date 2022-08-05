@@ -13,12 +13,12 @@ import java.util.List;
 @Service
 public class Public_invoicesService {
     private Public_invoicesRepository public_invoicesRepository;
-    private UnreadNumRepository unreadNumRepository;
+    private UnreadNumService unreadNumService;
     @Autowired
     public Public_invoicesService(Public_invoicesRepository public_invoicesRepository,
-                                  UnreadNumRepository unreadNumRepository){
+                                  UnreadNumService unreadNumService){
         this.public_invoicesRepository = public_invoicesRepository;
-        this.unreadNumRepository = unreadNumRepository;
+        this.unreadNumService = unreadNumService;
     }
 
     public List<Public_invoices> list_public_invoices(){
@@ -35,6 +35,6 @@ public class Public_invoicesService {
 
     public void add(Public_invoices public_invoices){
         public_invoicesRepository.save(public_invoices);
-        unreadNumRepository.updateAllPublicUnreadNum(1);
+        unreadNumService.incrementPublicUnreadNum();
     }
 }
