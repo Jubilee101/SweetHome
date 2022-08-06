@@ -41,8 +41,8 @@ public class UnreadNumKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UnreadNumKey that = (UnreadNumKey) o;
-        return email.equals(that.getEmail()) && type.equals(that.email);
+        UnreadNumKey key = (UnreadNumKey) o;
+        return email.equals(key.email) && type.equals(key.type);
     }
 
     @Override
