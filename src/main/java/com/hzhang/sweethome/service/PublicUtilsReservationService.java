@@ -12,6 +12,8 @@ import com.hzhang.sweethome.repository.PublicUtilsRepository;
 import com.hzhang.sweethome.repository.PublicUtilsReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -88,6 +90,7 @@ public class PublicUtilsReservationService {
         publicUtilsReservationRepository.save(reservation);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void cancel(LocalDate date, String time, String category, String email) {
         TimeFrame timeFrame = parse(time);
         Optional<PublicUtilsReservation> reservation = publicUtilsReservationRepository

@@ -5,6 +5,8 @@ import com.hzhang.sweethome.repository.Public_invoicesRepository;
 import com.hzhang.sweethome.repository.UnreadNumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -33,6 +35,7 @@ public class Public_invoicesService {
         return invoices;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void add(Public_invoices public_invoices){
         public_invoicesRepository.save(public_invoices);
         unreadNumService.incrementPublicUnreadNum();

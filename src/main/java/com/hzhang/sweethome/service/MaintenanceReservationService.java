@@ -11,6 +11,8 @@ import com.hzhang.sweethome.repository.UserRepository;
 import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -39,6 +41,7 @@ public class MaintenanceReservationService {
         this.personalInvoiceService = personalInvoiceService;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void add(String email, String description, MultipartFile[] images){
         Optional<User> user = userRepository.findById(email);
         if (!user.isPresent()) {
