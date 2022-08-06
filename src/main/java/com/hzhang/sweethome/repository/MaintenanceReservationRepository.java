@@ -11,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MaintenanceReservationRepository extends JpaRepository<MaintenanceReservation, Long>{
 
     List<MaintenanceReservation> findByUser(User user);
+
+    Optional<MaintenanceReservation> findById(Long Id);
 
     List<MaintenanceReservation> findAll();
     @Transactional

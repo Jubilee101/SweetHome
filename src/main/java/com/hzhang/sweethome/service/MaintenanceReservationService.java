@@ -2,11 +2,13 @@ package com.hzhang.sweethome.service;
 
 import com.hzhang.sweethome.exception.MaintenanceReservationNotFoundException;
 import com.hzhang.sweethome.exception.UserNotExistException;
+import com.hzhang.sweethome.model.InvoiceType;
 import com.hzhang.sweethome.model.MaintenanceImage;
 import com.hzhang.sweethome.model.MaintenanceReservation;
 import com.hzhang.sweethome.model.User;
 import com.hzhang.sweethome.repository.MaintenanceReservationRepository;
 import com.hzhang.sweethome.repository.UserRepository;
+import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,14 +26,17 @@ public class MaintenanceReservationService {
     private MaintenanceReservationRepository maintenanceReservationRepository;
     private UserRepository userRepository;
     private ImageStorageService imageStorageService;
+    private PersonalInvoiceService personalInvoiceService;
 
     @Autowired
     public MaintenanceReservationService(MaintenanceReservationRepository maintenanceReservationRepository,
                                          ImageStorageService imageStorageService,
-                                         UserRepository userRepository){
+                                         UserRepository userRepository,
+                                         PersonalInvoiceService personalInvoiceService){
         this.maintenanceReservationRepository = maintenanceReservationRepository;
         this.imageStorageService = imageStorageService;
         this.userRepository = userRepository;
+        this.personalInvoiceService = personalInvoiceService;
     }
 
     public void add(String email, String description, MultipartFile[] images){
@@ -39,7 +44,6 @@ public class MaintenanceReservationService {
         if (!user.isPresent()) {
             throw new UserNotExistException("Cannot find user!");
         }
-        User resident = user.get();
         MaintenanceReservation maintenanceReservation = new MaintenanceReservation.Builder()
                 .setDescription(description)
                 .setUser(new User.Builder().setEmail(email).build())
@@ -64,7 +68,6 @@ public class MaintenanceReservationService {
         if (!reservations.isEmpty()) {
             reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> {
                 if (o1.getDate() == null && o2.getDate() == null) {
-
                     return 0;
                 }
                 else if (o1.getDate() == null) {
@@ -115,8 +118,13 @@ public class MaintenanceReservationService {
     public void updateTime(LocalTime startTime, Long id){
         maintenanceReservationRepository.updateTime(startTime,id);
     }
+
     public  void updateTimeAndDate(LocalDate date,LocalTime startTime,Long id){
         updateDate(date,id);
         updateTime(startTime,id);
+        MaintenanceReservation reservation = maintenanceReservationRepository.findById(id).get();
+        User user = reservation.getUser();
+        String text = "Notice! Your maintenance request has been handled and updated!";
+        personalInvoiceService.add(InvoiceType.RESERVATION.name(), text, user);
     }
 }
