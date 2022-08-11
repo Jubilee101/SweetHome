@@ -37,7 +37,7 @@ public class UnreadNumService {
 
     public void increaseUnreadNumByOne(String email, String type) {
         unreadNumRepository.increaseUnreadNumByOneById(email, type);
-        deferredRequestList.publish(email, type);
+        deferredRequestList.publish(email, "PERSONAL");
     }
 
     public void clearUnreadNum(String email, String type) {
