@@ -26,22 +26,23 @@ public class DeferredRequestList {
             }
         }
     }
-    public void publish() {
-        String id = InvoiceType.PUBLIC.name();
+    public void publish(String id) {
         System.out.println("publish!");
         if (watchRequests.containsKey(id)){
             System.out.println("has key!");
             Collection<DeferredResult<String>> deferredResults = watchRequests.get(id);
             for (DeferredResult<String> deferredResult : deferredResults) {
                 deferredResult.setResult("update!");
+                System.out.println("update!");
             }
         }
     }
 
     public DeferredResult<String> watch(String email, String type) {
-        final Long TIME_OUT = (long)1000 * 5;
-        String id = type.equals(InvoiceType.PUBLIC.name()) ? type :
+        final long TIME_OUT = 10000;
+        String id = (type.equals(InvoiceType.PUBLIC.name()) || type.equals("MESSAGE")) ? type :
                 new UnreadNumKey().setType(type).setEmail(email).toString();
+
         DeferredResult<String> deferredResult = new DeferredResult<>(TIME_OUT);
         deferredResult.onCompletion(() -> {
             watchRequests.remove(id, deferredResult);
