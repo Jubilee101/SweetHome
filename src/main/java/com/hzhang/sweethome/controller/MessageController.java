@@ -16,7 +16,10 @@ public class MessageController {
     }
     @GetMapping("/messages")
     public List<Message> findall(){
-        return messageService.findall();
+        System.out.println("find all start");
+        List<Message> messages = messageService.findall();
+        System.out.println("found all");
+        return messages;
     }
 
     @PostMapping("/messages")

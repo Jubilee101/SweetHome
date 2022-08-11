@@ -50,6 +50,6 @@ public class UnreadNumService {
 
     public void incrementPublicUnreadNum() {
         unreadNumRepository.updateAllPublicUnreadNum(1);
-        deferredRequestList.publish();
+        deferredRequestList.publish(InvoiceType.PUBLIC.name());
     }
 }
