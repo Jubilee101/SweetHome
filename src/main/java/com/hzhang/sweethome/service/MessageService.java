@@ -4,6 +4,7 @@ import com.hzhang.sweethome.model.DeferredRequestList;
 import com.hzhang.sweethome.model.MaintenanceReservation;
 import com.hzhang.sweethome.model.Message;
 import com.hzhang.sweethome.repository.MessageRepository;
+import com.hzhang.sweethome.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -17,14 +18,17 @@ import java.util.List;
 public class MessageService {
     private MessageRepository messageRepository;
     private DeferredRequestList deferredRequestList;
+    private UserRepository userRepository;
     @Autowired
     public MessageService(MessageRepository messageRepository,
-                          DeferredRequestList deferredRequestList){
+                          DeferredRequestList deferredRequestList,
+                          UserRepository userRepository){
         this.messageRepository=messageRepository;
         this.deferredRequestList = deferredRequestList;
+        this.userRepository = userRepository;
     }
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void add(String text,String nameAndRoom){
+    public void add(String email, String text,String nameAndRoom){
         Message message = new Message
                 .Builder()
                 .setTime(LocalTime.now())
@@ -33,7 +37,7 @@ public class MessageService {
                 .setNameAndRoom(nameAndRoom)
                 .build();
         messageRepository.save(message);
-        deferredRequestList.publish("MESSAGE");
+        deferredRequestList.publishMsg(email, userRepository.findAll());
     }
 
     public List<Message> findall(){

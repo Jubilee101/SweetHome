@@ -6,6 +6,7 @@ import com.hzhang.sweethome.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 @RestController
 public class MessageController {
@@ -24,8 +25,8 @@ public class MessageController {
 
     @PostMapping("/messages")
     public void add(@RequestParam("text") String text,
-                    @RequestParam("name_and_room") String name_and_room){
-        messageService.add(text,name_and_room);
+                    @RequestParam("name_and_room") String name_and_room,
+                    Principal principal){
+        messageService.add(principal.getName(), text, name_and_room);
     }
-
 }

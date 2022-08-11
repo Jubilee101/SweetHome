@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class DeferredRequestList {
@@ -38,9 +39,25 @@ public class DeferredRequestList {
         }
     }
 
+    public void publishMsg(String email, List<User> users) {
+        for (User user : users) {
+            if (email.equals(user.getEmail())) {
+                continue;
+            }
+            UnreadNumKey id = new UnreadNumKey().setType("MESSAGE").setEmail(user.getEmail());
+            if (watchRequests.containsKey(id.toString())){
+                System.out.println(id);
+                Collection<DeferredResult<String>> deferredResults = watchRequests.get(id.toString());
+                for (DeferredResult<String> deferredResult : deferredResults) {
+                    deferredResult.setResult("update!");
+                }
+            }
+        }
+    }
+
     public DeferredResult<String> watch(String email, String type) {
-        final long TIME_OUT = 10000;
-        String id = (type.equals(InvoiceType.PUBLIC.name()) || type.equals("MESSAGE")) ? type :
+        final long TIME_OUT = 8000;
+        String id = (type.equals(InvoiceType.PUBLIC.name())) ? type :
                 new UnreadNumKey().setType(type).setEmail(email).toString();
 
         DeferredResult<String> deferredResult = new DeferredResult<>(TIME_OUT);
