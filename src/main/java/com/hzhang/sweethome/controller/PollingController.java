@@ -20,11 +20,17 @@ public class PollingController {
         this.deferredRequestList = list;
     }
 
-    @GetMapping(value = "/watch")
-    public DeferredResult<String> watch(@RequestParam(name = "type") String type
-            , Principal principal) {
-        return deferredRequestList.watch(principal.getName(), type);
+    @GetMapping(value = "/watch_personal/{email}")
+    public DeferredResult<String> watchPersonal(@PathVariable("email") String email) {
+        System.out.println(email + " send personal watch request");
+        return deferredRequestList.watch(email, "PERSONAL");
     }
+
+    @GetMapping(value = "/watch_public")
+    public DeferredResult<String> watchPublic() {
+        return deferredRequestList.watch("", "PUBLIC");
+    }
+
     // each person take one path so that there's no jam
     @GetMapping(value = "/watch/{email}")
     public DeferredResult<String> watchMsg(@PathVariable("email") String email,
