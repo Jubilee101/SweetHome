@@ -22,6 +22,12 @@ public class MaintenanceReservation implements Serializable {
     @JsonProperty("start_time")
     private LocalTime startTime;
 
+    @JsonProperty("submit_time")
+    private LocalTime submitTime;
+
+    @JsonProperty("submit_date")
+    private LocalDate submitDate;
+
     @JsonProperty("date")
     private LocalDate date;
 
@@ -43,6 +49,8 @@ public class MaintenanceReservation implements Serializable {
         this.description = builder.description;
         this.user = builder.user;
         this.maintenanceImages = builder.maintenanceImages;
+        this.submitTime = builder.submitTime;
+        this.submitDate = builder.submitDate;
     }
 
     public List<MaintenanceImage> getMaintenanceImages() {
@@ -70,6 +78,13 @@ public class MaintenanceReservation implements Serializable {
         return description;
     }
 
+    public LocalTime getSubmitTime() {
+        return submitTime;
+    }
+
+    public LocalDate getSubmitDate() {
+        return submitDate;
+    }
 
     public User getUser() {
         return user;
@@ -86,6 +101,12 @@ public class MaintenanceReservation implements Serializable {
         @JsonProperty("start_time")
         private LocalTime startTime;
 
+        @JsonProperty("submit_time")
+        private LocalTime submitTime;
+
+        @JsonProperty("submit_date")
+        private LocalDate submitDate;
+
         @JsonProperty("date")
         private LocalDate date;
 
@@ -97,6 +118,8 @@ public class MaintenanceReservation implements Serializable {
 
         @JsonProperty("maintenanceImages")
         private List<MaintenanceImage> maintenanceImages;
+
+
 
         public Builder setId(Long id) {
             this.id = id;
@@ -123,6 +146,16 @@ public class MaintenanceReservation implements Serializable {
 
         public Builder setUser(User user){
             this.user = user;
+            return this;
+        }
+
+        public Builder setSubmitTime(LocalTime submitTime) {
+            this.submitTime = submitTime;
+            return this;
+        }
+
+        public Builder setSubmitDate(LocalDate submitDate) {
+            this.submitDate = submitDate;
             return this;
         }
 

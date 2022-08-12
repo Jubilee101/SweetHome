@@ -49,7 +49,11 @@ public class MaintenanceReservationService {
         }
         MaintenanceReservation maintenanceReservation = new MaintenanceReservation.Builder()
                 .setDescription(description)
-                .setUser(new User.Builder().setEmail(email).build())
+                .setUser(new User.Builder()
+                        .setEmail(email)
+                        .build())
+                .setSubmitTime(LocalTime.now())
+                .setSubmitDate(LocalDate.now())
                 .build();
 
         List<String> mediaLinks = Arrays.stream(images).parallel().map(image -> imageStorageService.save(image)).collect(Collectors.toList());
@@ -69,25 +73,7 @@ public class MaintenanceReservationService {
         }
         List<MaintenanceReservation> reservations = maintenanceReservationRepository.findByUser(user.get());
         if (!reservations.isEmpty()) {
-            reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> {
-                if (o1.getDate() == null && o2.getDate() == null) {
-                    return 0;
-                }
-                else if (o1.getDate() == null) {
-                    return -1;
-                }
-                else if (o2.getDate() == null) {
-                    return 1;
-                }
-                else {
-                    if (o1.getDate().equals(o2.getDate())) {
-                        return -1 * o1.getStartTime().compareTo(o2.getStartTime());
-                    }
-                    else {
-                        return -1 * o1.getDate().compareTo(o2.getDate());
-                    }
-                }
-            });
+            reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> compareReservation(o1, o2));
         }
         return reservations;
     }
@@ -95,21 +81,7 @@ public class MaintenanceReservationService {
     public List<MaintenanceReservation> findall() {
         List<MaintenanceReservation> reservations = maintenanceReservationRepository.findAll();
         if (!reservations.isEmpty()) {
-            reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> {
-                if (o1.getDate() == null && o2.getDate() == null) {
-                    return 0;
-                } else if (o1.getDate() == null) {
-                    return -1;
-                } else if (o2.getDate() == null) {
-                    return 1;
-                } else {
-                    if (o1.getDate().equals(o2.getDate())) {
-                        return -1 * o1.getStartTime().compareTo(o2.getStartTime());
-                    } else {
-                        return -1 * o1.getDate().compareTo(o2.getDate());
-                    }
-                }
-            });
+            reservations.sort((MaintenanceReservation o1, MaintenanceReservation o2) -> compareReservation(o1, o2));
         }
         return reservations;
 
@@ -129,5 +101,24 @@ public class MaintenanceReservationService {
         User user = reservation.getUser();
         String text = "Notice! Your maintenance request has been handled and updated!";
         personalInvoiceService.add(InvoiceType.RESERVATION.name(), text, user);
+    }
+
+    private int compareSubmitTime(MaintenanceReservation o1, MaintenanceReservation o2) {
+        if (o1.getSubmitDate().equals(o2.getSubmitDate())) {
+            return - 1 * o1.getSubmitTime().compareTo(o2.getSubmitTime());
+        }
+        return -1 * o1.getSubmitDate().compareTo(o2.getSubmitDate());
+    }
+
+    private int compareReservation(MaintenanceReservation o1, MaintenanceReservation o2) {
+        if (o1.getDate() == null && o2.getDate() == null) {
+            return compareSubmitTime(o1, o2);
+        } else if (o1.getDate() == null) {
+            return -1;
+        } else if (o2.getDate() == null) {
+            return 1;
+        } else {
+            return compareSubmitTime(o1, o2);
+        }
     }
 }

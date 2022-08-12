@@ -30,5 +30,4 @@ public interface MaintenanceReservationRepository extends JpaRepository<Maintena
     @Query("update MaintenanceReservation maintenancereservation set maintenancereservation.startTime=?1 where maintenancereservation.id=?2")
     void updateTime(LocalTime starTime, Long id);
 
-
 }
