@@ -47,6 +47,11 @@ public class MessageService {
        return messageList;
     }
 
+    public List<Message> findAll(){
+        List<Message> messageList  = messageRepository.findAll();
+        return messageList;
+    }
+
     public List<Message> loadMessages(long id) {
         List<Message> messages = messageRepository.loadMessage(id);
         Collections.reverse(messages);

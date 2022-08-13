@@ -15,9 +15,15 @@ public class MessageController {
     public MessageController(MessageService messageService){
         this.messageService = messageService;
     }
+    @GetMapping("/messages/init")
+    public List<Message> findFirstTen(){
+        List<Message> messages = messageService.findFirstTen();
+        return messages;
+    }
+
     @GetMapping("/messages")
     public List<Message> findall(){
-        List<Message> messages = messageService.findFirstTen();
+        List<Message> messages = messageService.findAll();
         return messages;
     }
 
