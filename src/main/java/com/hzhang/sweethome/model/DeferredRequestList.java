@@ -14,6 +14,9 @@ import java.util.List;
 public class DeferredRequestList {
     public static Multimap<String, DeferredResult<String>> watchRequests =
             Multimaps.synchronizedMultimap(HashMultimap.create());
+    public static Multimap<String, DeferredResult<Message>> watchMsgRequests =
+            Multimaps.synchronizedMultimap(HashMultimap.create());
+    private final static long TIME_OUT = 8000;
 
     public void publish(String email, String type) {
         UnreadNumKey id = new UnreadNumKey().setType(type).setEmail(email);
@@ -39,24 +42,21 @@ public class DeferredRequestList {
         }
     }
 
-    public void publishMsg(String email, List<User> users) {
+    public void publishMsg(List<User> users, Message message) {
         for (User user : users) {
-            if (email.equals(user.getEmail())) {
-                continue;
-            }
-            UnreadNumKey id = new UnreadNumKey().setType("MESSAGE").setEmail(user.getEmail());
-            if (watchRequests.containsKey(id.toString())){
+            String id = user.getEmail();
+            if (watchMsgRequests.containsKey(id)){
                 System.out.println(id);
-                Collection<DeferredResult<String>> deferredResults = watchRequests.get(id.toString());
-                for (DeferredResult<String> deferredResult : deferredResults) {
-                    deferredResult.setResult("update!");
+                Collection<DeferredResult<Message>> deferredResults = watchMsgRequests.get(id);
+                for (DeferredResult<Message> deferredResult : deferredResults) {
+                    deferredResult.setResult(message);
                 }
             }
         }
     }
 
     public DeferredResult<String> watch(String email, String type) {
-        final long TIME_OUT = 8000;
+
         String id = (type.equals(InvoiceType.PUBLIC.name())) ? type :
                 new UnreadNumKey().setType(type).setEmail(email).toString();
 
@@ -66,6 +66,16 @@ public class DeferredRequestList {
         });
         watchRequests.put(id, deferredResult);
         System.out.println( "size "+ watchRequests.size());
+        return deferredResult;
+    }
+
+    public DeferredResult<Message> watchMsg(String email) {
+        DeferredResult<Message> deferredResult = new DeferredResult<>(TIME_OUT);
+        deferredResult.onCompletion(() -> {
+            watchMsgRequests.remove(email, deferredResult);
+        });
+        watchMsgRequests.put(email, deferredResult);
+        System.out.println( "message size "+ watchMsgRequests.size());
         return deferredResult;
     }
 }

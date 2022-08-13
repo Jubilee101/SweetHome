@@ -29,7 +29,7 @@ public class MessageService {
         this.userRepository = userRepository;
     }
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void add(String email, String text,String nameAndRoom){
+    public void add(String text,String nameAndRoom){
         Message message = new Message
                 .Builder()
                 .setTime(LocalTime.now())
@@ -38,7 +38,7 @@ public class MessageService {
                 .setNameAndRoom(nameAndRoom)
                 .build();
         messageRepository.save(message);
-        deferredRequestList.publishMsg(email, userRepository.findAll());
+        deferredRequestList.publishMsg(userRepository.findAll(), message);
     }
 
     public List<Message> findFirstTen(){
