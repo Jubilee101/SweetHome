@@ -15,18 +15,26 @@ public class MessageController {
     public MessageController(MessageService messageService){
         this.messageService = messageService;
     }
+    @GetMapping("/messages/init")
+    public List<Message> findFirstTen(){
+        List<Message> messages = messageService.findFirstTen();
+        return messages;
+    }
+
     @GetMapping("/messages")
     public List<Message> findall(){
-        System.out.println("find all start");
-        List<Message> messages = messageService.findall();
-        System.out.println("found all");
+        List<Message> messages = messageService.findAll();
         return messages;
     }
 
     @PostMapping("/messages")
     public void add(@RequestParam("text") String text,
-                    @RequestParam("name_and_room") String name_and_room,
-                    Principal principal){
-        messageService.add(principal.getName(), text, name_and_room);
+                    @RequestParam("name_and_room") String name_and_room){
+        messageService.add(text, name_and_room);
+    }
+
+    @GetMapping("/messages/{id}")
+    public List<Message> loadMessage(@PathVariable("id") long id) {
+        return messageService.loadMessages(id);
     }
 }

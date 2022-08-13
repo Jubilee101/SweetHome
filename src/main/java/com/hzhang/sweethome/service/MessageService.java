@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class MessageService {
         this.userRepository = userRepository;
     }
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void add(String email, String text,String nameAndRoom){
+    public void add(String text,String nameAndRoom){
         Message message = new Message
                 .Builder()
                 .setTime(LocalTime.now())
@@ -37,21 +38,24 @@ public class MessageService {
                 .setNameAndRoom(nameAndRoom)
                 .build();
         messageRepository.save(message);
-        deferredRequestList.publishMsg(email, userRepository.findAll());
+        deferredRequestList.publishMsg(userRepository.findAll(), message);
     }
 
-    public List<Message> findall(){
-       List<Message> messageList  = messageRepository.findAll();
-//        if (!messageList.isEmpty()) {
-//            messageList.sort((Message o1, Message o2) -> {
-//                if (o1.getDate().equals(o2.getDate())) {
-//                    return o1.getTime().compareTo(o2.getTime());
-//                } else {
-//                    return o1.getDate().compareTo(o2.getDate());
-//                }
-//            });
-//        }
+    public List<Message> findFirstTen(){
+       List<Message> messageList  = messageRepository.findFirstTen();
+        Collections.reverse(messageList);
        return messageList;
+    }
+
+    public List<Message> findAll(){
+        List<Message> messageList  = messageRepository.findAll();
+        return messageList;
+    }
+
+    public List<Message> loadMessages(long id) {
+        List<Message> messages = messageRepository.loadMessage(id);
+        Collections.reverse(messages);
+        return messages;
     }
 
 }
