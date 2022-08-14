@@ -44,8 +44,8 @@ public class UnreadNumService {
         unreadNumRepository.clearUnreadNumById(email, type);
     }
 
-    public void clearAllPublicUnreadNum() {
-        unreadNumRepository.clearAllPublicUnreadNum();
+    public void clearAllPublicUnreadNum(String email) {
+        unreadNumRepository.clearAllPublicUnreadNum(email);
     }
 
     public void incrementPublicUnreadNum() {
