@@ -30,8 +30,8 @@ public class UnreadNumController {
     }
 
     @PutMapping(value = "/unread_nums/clear_public")
-    public void clearUnreadNumsByType() {
-        unreadNumService.clearAllPublicUnreadNum();
+    public void clearUnreadNumsByType(Principal principal) {
+        unreadNumService.clearAllPublicUnreadNum(principal.getName());
     }
 
 }
