@@ -7,6 +7,7 @@ import com.hzhang.sweethome.service.PublicUtilsReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,11 @@ public class PublicUtilsReservationController {
                                   Principal principal) {
         LocalDate startDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         publicUtilsReservationService.cancel(startDate, time, category, principal.getName());
+    }
+
+    @DeleteMapping("/public_utils/{id}")
+    public void deleteReservation(@PathVariable("id") Long id){
+        publicUtilsReservationService.delete(id);
     }
 
 }
