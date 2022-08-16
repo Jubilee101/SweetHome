@@ -19,4 +19,4 @@ SweetHome mainly uses Spring Boot to build its backend and React.js for the fron
 Spring Data JPA is used for better and easier database manipulation.
 
 ### Notice
-This is the frontend implementation of SweetHome, please see frontend [here](https://github.com/Jubilee101/SweetHomeFE) :)
+This is the backend implementation of SweetHome, please see frontend [here](https://github.com/Jubilee101/SweetHomeFE) :)
