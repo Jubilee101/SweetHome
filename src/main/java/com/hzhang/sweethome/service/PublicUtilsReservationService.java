@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -69,8 +70,19 @@ public class PublicUtilsReservationService {
     }
 
     public List<PublicUtilsReservation> getPublicUtilsByUser(String email) {
-        return publicUtilsReservationRepository.findByUser(
+        List<PublicUtilsReservation> reservations = publicUtilsReservationRepository.findByUser(
                 new User.Builder().setEmail(email).build());
+        reservations.sort(new Comparator<PublicUtilsReservation>() {
+            @Override
+            public int compare(PublicUtilsReservation o1, PublicUtilsReservation o2) {
+                if (o1.getDate().equals(o2.getDate())) {
+                    return -1 * o1.getTimeFrame().compareTo(o2.getTimeFrame());
+                } else {
+                    return -1 * o1.getDate().compareTo(o2.getDate());
+                }
+            }
+        });
+        return reservations;
     }
 
     public void add(String category, LocalDate date, String time, String email) {
@@ -114,7 +126,11 @@ public class PublicUtilsReservationService {
                 .setUser(new User.Builder().setEmail(email).build())
                 .build();
         publicUtilsReservationRepository.save(reservationManager);
+    }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void delete(Long id) {
+        publicUtilsReservationRepository.deleteById(id);
     }
 
     private TimeFrame parse(String time) {

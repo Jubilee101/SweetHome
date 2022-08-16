@@ -20,6 +20,7 @@ public class PublicUtilsReservation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty(value = "id")
     private Long id;
 
     @JsonProperty(value = "time_frame")
