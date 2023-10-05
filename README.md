@@ -1,6 +1,19 @@
 # SweetHome
 SweetHome is a property management system for managers and residents to better communicate with one another
 ![DashBoardPage](https://github.com/Jubilee101/SweetHome/blob/main/demoResources/sweethome.png)
+
+### Notice
+
+(10/05/2023) I'm getting a question on setting up the project (sorry for seeing that 1 month later). I'm sorry but the project was
+
+never properly packaged and released. The database in this project was hosted on an Amazon RDS server. I deliberately left out
+
+the configuration of that part for safety reason.  So in order to make the project to work you'll need to launch an RDS instance
+
+and configure properly. You will also want to connect to google cloud storage since that's where the images are stored. Then you can run the backend in a proper IDE such as Intellij locally. I'm pretty occupied right now and probably won't have time to setup
+
+a wiki any time soon. But if you'd like you can leave your email in my form and I'll reach out. Thank you for liking my project.
+
 ### Current Features
 1. Invoice dashboard with long polling listening to backend for any public/personal invoice update
 2. Quick and simple maintenance request sending/handling and public utils reservation/cancellation
